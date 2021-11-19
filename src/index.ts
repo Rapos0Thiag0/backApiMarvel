@@ -36,11 +36,15 @@ app.get("/", (req:Request,res:Response,next:NextFunction)=>{
             apikey: publicKey,
             hash: hash,
             orderBy: 'name',
-            limit: 10,
+            limit: 20,
             offset: Number(limit) * Number(page)
         }
     }).then((response => {
-        res.json(response.data);
+
+       const personagens:Array<any> = response.data.data.results;
+       const nomes:Array<any> = personagens.map(personagem => personagem.name)
+
+        res.json(nomes);
     })).catch(err =>{
         res.status(500).send('erro interno');
     })
