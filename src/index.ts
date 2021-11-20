@@ -4,8 +4,8 @@ import axios from 'axios'; // Requisiçoes
 import md5 from 'md5';
 import 'dotenv/config'
 //Chave Marvel
-const publicKey = 'b60115b9e7a50dd36c8c4cd76c94be33';
-const privateKey = 'ea81bf0a9de7ae4eb4e441bcbb8c2e46f896aa40';
+const publicKey = process.env.PUBLIC_KEY;
+const privateKey = process.env.PRIVATE_KEY;
 const  urlApi = 'http://gateway.marvel.com/v1/public';
 
 
@@ -22,11 +22,14 @@ app.listen(port,()=>{
 })
 
 
-app.get("/", (req:Request,res:Response,next:NextFunction)=>{
-    //limite nao pode ser menor que 1 ou maior que 100
-    //pagina 
-    const {page,limit} = req.query; //vai receber a pagina atual e o limite de exibição
+app.get('/', (req: Request,res: Response, next: NextFunction)=>{
+    
+    const { page } = req.body;
+    const { limit } = req.body;
 
+    console.log(Number(page));
+    console.log(Number(limit));
+    // const limit:number = 30//Number(req.query.limit)
     const ts = new Date().getTime().toString();
     const hash = md5(ts + privateKey + publicKey)
 
@@ -36,15 +39,25 @@ app.get("/", (req:Request,res:Response,next:NextFunction)=>{
             apikey: publicKey,
             hash: hash,
             orderBy: 'name',
-            limit: 20,
+            limit: limit,
             offset: Number(limit) * Number(page)
         }
     }).then((response => {
 
        const personagens:Array<any> = response.data.data.results;
-       const nomes:Array<any> = personagens.map(personagem => personagem.name)
-
-        res.json(nomes);
+       const nomes:Array<any> = personagens.map(nomes => {
+           return {
+               nome: nomes.name,
+               id: nomes.id
+           }
+       });
+       const objRetorno = {
+        page: page,
+        count: nomes.length,
+        totalPages: response.data.data.total/limit,
+        personagens: [... nomes]
+   }
+    res.json(objRetorno)
     })).catch(err =>{
         res.status(500).send('erro interno');
     })
