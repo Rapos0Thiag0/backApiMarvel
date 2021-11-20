@@ -39,7 +39,7 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
             apikey: publicKey,
             hash: hash,
             orderBy: 'name',
-            limit: limit,
+            limit: 20,
             offset: Number(limit) * Number(page)
         }
     }).then((response => {
@@ -62,5 +62,3 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
         res.status(500).send('erro interno');
     })
 })
-
-
