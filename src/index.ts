@@ -27,9 +27,6 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
     const { page } = req.query;
     const { limit } = req.query;
 
-    console.log(Number(page));
-    console.log(Number(limit));
-    // const limit:number = 30//Number(req.query.limit)
     const ts = new Date().getTime().toString();
     const hash = md5(ts + privateKey + publicKey)
 
@@ -46,19 +43,20 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
 
        const personagens:Array<any> = response.data.data.results;
        const nomes:Array<any> = personagens.map(nomes => {
-           return {
-               nome: nomes.name,
-               id: nomes.id,
-               image:nomes.thumbnail
-           }
-       });
+        return {
+            nome: nomes.name,
+            id: nomes.id,
+            image:nomes.thumbnail,
+            imgPrincipal:nomes.image
+        }
+    });   
        const objRetorno = {
         page: page,
         count: nomes.length,
         totalPages: response.data.data.total/Number(limit),
         personagens: [... nomes]
    }
-    res.json(objRetorno)
+    res.json(personagens)
     })).catch(err =>{
         res.status(500).send('erro interno');
     })
