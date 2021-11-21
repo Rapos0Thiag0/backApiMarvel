@@ -47,7 +47,6 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
             nome: nomes.name,
             id: nomes.id,
             image:nomes.thumbnail,
-            imgPrincipal:nomes.image
         }
     });   
        const objRetorno = {
@@ -56,8 +55,34 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
         totalPages: response.data.data.total/Number(limit),
         personagens: [... nomes]
    }
-    res.json(personagens)
+    res.json(objRetorno)
     })).catch(err =>{
-        res.status(500).send('erro interno');
+        res.status(500).send('Erro interno');
+    })
+})
+
+app.get("/personagem/:id",(req:Request,res:Response)=>{
+    const ts = new Date().getTime().toString();
+    const hash = md5(ts + privateKey + publicKey)
+    const {id} = req.params;
+
+    axios.get(`${urlApi}/characters/${id}`,{
+        params:{
+            ts:ts,
+            apikey: publicKey,
+            hash: hash,
+        }
+    }).then((response)=>{
+        const personagem:Array<any> = response.data.data.results;
+        const personagemAtributos:Array<any> = personagem.map((personagem)=>{
+            return{
+                nome: personagem.name,
+                descricao: personagem.description,
+                id:personagem.id,
+                image:personagem.thumbnail,
+                comics:personagem.comics
+            }
+        })
+        res.send(personagemAtributos)
     })
 })
