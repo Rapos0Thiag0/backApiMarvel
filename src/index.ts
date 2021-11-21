@@ -54,7 +54,7 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
        const objRetorno = {
         page: page,
         count: nomes.length,
-        totalPages: response.data.data.total/limit,
+        totalPages: response.data.data.total/Number(limit),
         personagens: [... nomes]
    }
     res.json(objRetorno)
