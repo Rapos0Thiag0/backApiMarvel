@@ -39,7 +39,7 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
             apikey: publicKey,
             hash: hash,
             orderBy: 'name',
-            limit: 20,
+            limit: limit,
             offset: Number(limit) * Number(page)
         }
     }).then((response => {
