@@ -24,8 +24,8 @@ app.listen(port,()=>{
 
 app.get('/', (req: Request,res: Response, next: NextFunction)=>{
     
-    const { page } = req.body;
-    const { limit } = req.body;
+    const { page } = req.query;
+    const { limit } = req.query;
 
     console.log(Number(page));
     console.log(Number(limit));
