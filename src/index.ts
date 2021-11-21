@@ -21,8 +21,7 @@ app.listen(port,()=>{
     console.log("Servidor executando na porta " + port)
 })
 
-
-app.get('/', (req: Request,res: Response, next: NextFunction)=>{
+app.get('/personagens', (req: Request,res: Response, next: NextFunction)=>{
     
     const { page } = req.query;
     const { limit } = req.query;
@@ -61,7 +60,7 @@ app.get('/', (req: Request,res: Response, next: NextFunction)=>{
     })
 })
 
-app.get("/personagem/:id",(req:Request,res:Response)=>{
+app.get("/personagens/:id",(req:Request,res:Response)=>{
     const ts = new Date().getTime().toString();
     const hash = md5(ts + privateKey + publicKey)
     const {id} = req.params;
