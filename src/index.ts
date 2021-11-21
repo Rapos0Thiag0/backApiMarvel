@@ -83,5 +83,7 @@ app.get("/personagens/:id",(req:Request,res:Response)=>{
             }
         })
         res.send(personagemAtributos)
+    }).catch(err =>{
+        res.status(500).send("Erro interno")
     })
 })
