@@ -87,3 +87,31 @@ app.get("/personagens/:id",(req:Request,res:Response)=>{
         res.status(500).send("Erro interno")
     })
 })
+
+app.get("/personagens/:id", (req: Request, res: Response) => {
+    const ts = new Date().getTime().toString();
+    const hash = md5(ts + privateKey + publicKey);
+    const { id } = req.params;
+    axios
+      .get(`${urlApi}/characters/${id}/comics`, {
+        params: {
+          ts: ts,
+          apikey: publicKey,
+          hash: hash,
+        },
+      })
+      .then((response) => {
+        const personagem: Array<any> = response.data.data.results;
+        const personagemAtributos: Array<any> = personagem.map((personagem) => {
+          return {
+            nome: personagem.title,
+            image: personagem.thumbnail,
+          };
+        });
+        console.log(personagemAtributos);
+        res.send(personagemAtributos);
+      })
+      .catch((err) => {
+        res.status(500).send("Erro interno");
+      });
+  });
