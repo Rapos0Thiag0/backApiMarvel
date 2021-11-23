@@ -6,7 +6,7 @@ import "dotenv/config";
 //Chave Marvel
 const publicKey = process.env.PUBLIC_KEY;
 const privateKey = process.env.PRIVATE_KEY;
-const urlApi = "http://gateway.marvel.com/v1/public";
+const urlApi = "http://gateway.marvel.com/v1/public/characters";
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.get("/personagens", (req: Request, res: Response, next: NextFunction) => {
   const hash = md5(ts + privateKey + publicKey);
 
   axios
-    .get(`${urlApi}/characters`, {
+    .get(`${urlApi}`, {
       params: {
         ts: ts,
         apikey: publicKey,
@@ -95,7 +95,7 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
   const hash = md5(ts + privateKey + publicKey);
   const { id } = req.params;
   axios
-    .get(`${urlApi}/comics`, {
+    .get(`${urlApi}/${id}/comics`, {
       params: {
         ts: ts,
         apikey: publicKey,
