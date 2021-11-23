@@ -60,38 +60,36 @@ app.get("/personagens", (req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-// app.get("/personagens/:id", (req: Request, res: Response) => {
-//   const ts = new Date().getTime().toString();
-//   const hash = md5(ts + privateKey + publicKey);
-//   const { id } = req.params;
-
-//   axios
-//     .get(`${urlApi}/characters/${id}`, {
-//       params: {
-//         ts: ts,
-//         apikey: publicKey,
-//         hash: hash,
-//       },
-//     })
-//     .then((response) => {
-//       const personagem: Array<any> = response.data.data.results;
-//       const personagemAtributos: Array<any> = personagem.map((personagem) => {
-//         return {
-//           nome: personagem.name,
-//           descricao: personagem.description,
-//           id: personagem.id,
-//           image: personagem.thumbnail,
-//           comics: personagem.comics,
-//         };
-//       });
-//       res.send(personagemAtributos);
-//     })
-//     .catch((err) => {
-//       res.status(500).send("Erro interno");
-//     });
-// });
-
 app.get("/personagens/:id", (req: Request, res: Response) => {
+  const ts = new Date().getTime().toString();
+  const hash = md5(ts + privateKey + publicKey);
+  const { id } = req.params;
+
+  axios
+    .get(`${urlApi}/characters/${id}`, {
+      params: {
+        ts: ts,
+        apikey: publicKey,
+        hash: hash,
+      },
+    })
+    .then((response) => {
+      const personagem: Array<any> = response.data.data.results;
+      const personagemAtributos: Array<any> = personagem.map((personagem) => {
+        return {
+          nome: personagem.name,
+          descricao: personagem.description,
+          id: personagem.id,
+        };
+      });
+      res.send(personagemAtributos);
+    })
+    .catch((err) => {
+      res.status(500).send("Erro interno");
+    });
+});
+
+app.get("/comic/:id", (req: Request, res: Response) => {
   const ts = new Date().getTime().toString();
   const hash = md5(ts + privateKey + publicKey);
   const { id } = req.params;
