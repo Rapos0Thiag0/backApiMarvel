@@ -79,6 +79,7 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
         return {
           nome: personagem.name,
           descricao: personagem.description,
+          image: personagem.thumbnail,
           id: personagem.id,
         };
       });
@@ -107,6 +108,7 @@ app.get("/comic/:id", (req: Request, res: Response) => {
         return {
           nome: comic.title,
           image: comic.thumbnail,
+          descricao: comic.description,
         };
       });
       console.log(comicAtributos);
