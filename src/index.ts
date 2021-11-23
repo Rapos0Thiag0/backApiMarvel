@@ -5,7 +5,9 @@ import md5 from "md5";
 import "dotenv/config";
 //Chave Marvel
 const publicKey = process.env.PUBLIC_KEY;
+// const publicKey = "595f7ca9f8d674919076afef5646f19a";
 const privateKey = process.env.PRIVATE_KEY;
+// const privateKey = "d46150451287f075b34cfa35e3d837bd5c3ed9a5";
 const urlApi = "http://gateway.marvel.com/v1/public/characters";
 
 const app = express();
@@ -22,12 +24,11 @@ app.listen(port, () => {
 app.get("/personagens", (req: Request, res: Response, next: NextFunction) => {
   const { page } = req.query;
   const { limit } = req.query;
-
   const ts = new Date().getTime().toString();
   const hash = md5(ts + privateKey + publicKey);
 
   axios
-    .get(`${urlApi}?`, {
+    .get(`${urlApi}`, {
       params: {
         ts: ts,
         apikey: publicKey,
@@ -55,7 +56,7 @@ app.get("/personagens", (req: Request, res: Response, next: NextFunction) => {
       res.json(objRetorno);
     })
     .catch((err) => {
-      res.status(500).send("Erro interno");
+      res.status(500).send("Erro personagens interno");
     });
 });
 
@@ -103,17 +104,17 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
       },
     })
     .then((response) => {
-      const personagem: Array<any> = response.data.data.results;
-      const personagemAtributos: Array<any> = personagem.map((personagem) => {
+      const comic: Array<any> = response.data.data.results;
+      const comicAtributos: Array<any> = comic.map((comic) => {
         return {
-          nome: personagem.title,
-          image: personagem.thumbnail,
+          nome: comic.title,
+          image: comic.thumbnail,
         };
       });
-      console.log(personagemAtributos);
-      res.send(personagemAtributos);
+      console.log(comicAtributos);
+      res.send(comicAtributos);
     })
     .catch((err) => {
-      res.status(500).send("Erro interno");
+      res.status(500).send("Erro comic interno");
     });
 });
