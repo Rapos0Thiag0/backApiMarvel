@@ -66,7 +66,7 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   axios
-    .get(`${urlApi}/characters/${id}`, {
+    .get(`${urlApi}/${id}`, {
       params: {
         ts: ts,
         apikey: publicKey,
