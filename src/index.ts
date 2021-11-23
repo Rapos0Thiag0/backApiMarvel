@@ -79,7 +79,7 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
         return {
           nome: personagem.name,
           descricao:
-            personagem.description == undefined
+            personagem.description == undefined || ""
               ? "Sem descrição"
               : personagem.description,
           image: personagem.thumbnail,
