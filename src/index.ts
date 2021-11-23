@@ -78,7 +78,10 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
       const personagemAtributos: Array<any> = personagem.map((personagem) => {
         return {
           nome: personagem.name,
-          descricao: personagem.description,
+          descricao:
+            personagem.description == undefined
+              ? "Sem descrição"
+              : personagem.description,
           image: personagem.thumbnail,
           id: personagem.id,
         };
