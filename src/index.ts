@@ -27,7 +27,7 @@ app.get("/personagens", (req: Request, res: Response, next: NextFunction) => {
   const hash = md5(ts + privateKey + publicKey);
 
   axios
-    .get(`${urlApi}`, {
+    .get(`${urlApi}?`, {
       params: {
         ts: ts,
         apikey: publicKey,
@@ -95,7 +95,7 @@ app.get("/personagens/:id", (req: Request, res: Response) => {
   const hash = md5(ts + privateKey + publicKey);
   const { id } = req.params;
   axios
-    .get(`${urlApi}/${id}/comics`, {
+    .get(`${urlApi}/${id}/comics?`, {
       params: {
         ts: ts,
         apikey: publicKey,
